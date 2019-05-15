@@ -75,14 +75,14 @@ class data_loader_messey(object):
         for i in os.listdir(self.path):
             self.ls.append((i.split('_')[1],i,))
         
-        self.prepare_test_data(self.ls,0,300)
-        self.prepare_valid_data(self.ls,300,700)
-        self.prepare_train_data(self.ls,700)
+        self.prepare_test_data(self.ls,0,200)
+        self.prepare_valid_data(self.ls,200,400)
+        self.prepare_train_data(self.ls,400)
         
         
         # preparing dataset-train dataset/ validation datadset
-        self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.485,0.456,0.406),std=(0.229,0.224,0.225))])
-        self.simple_transform = Compose([Resize([128,128]),ToTensor(),Normalize(mean=(0.485,0.456,0.406),std=(0.229,0.224,0.225))])
+        self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(0.5),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.simple_transform = Compose([Resize([128,128]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
         self.train_dataset = ImageFolder(self.path_train,transform=self.train_transform)
         self.valid_dataset = ImageFolder(self.path_valid,transform=self.simple_transform)
         print(self.pathTestDataTarget)
