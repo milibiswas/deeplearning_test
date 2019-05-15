@@ -81,7 +81,7 @@ class data_loader_messey(object):
         
         
         # preparing dataset-train dataset/ validation datadset
-        self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(0.2),ToTensor(),Normalize(mean=(0.485,0.456,0.406),std=(0.229,0.224,0.225))])
+        self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.485,0.456,0.406),std=(0.229,0.224,0.225))])
         self.simple_transform = Compose([Resize([128,128]),ToTensor(),Normalize(mean=(0.485,0.456,0.406),std=(0.229,0.224,0.225))])
         self.train_dataset = ImageFolder(self.path_train,transform=self.train_transform)
         self.valid_dataset = ImageFolder(self.path_valid,transform=self.simple_transform)
