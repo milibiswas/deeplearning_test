@@ -75,9 +75,9 @@ class data_loader_messey(object):
         for i in os.listdir(self.path):
             self.ls.append((i.split('_')[1],i,))
         
-        self.prepare_test_data(self.ls,0,600)
-        self.prepare_valid_data(self.ls,600,1000)
-        self.prepare_train_data(self.ls,1000)
+        self.prepare_test_data(self.ls,0,300)
+        self.prepare_valid_data(self.ls,300,700)
+        self.prepare_train_data(self.ls,700)
         
         
         # preparing dataset-train dataset/ validation datadset
