@@ -152,6 +152,7 @@ class data_loader_messey(object):
         division=(self.trainValidDatasetLength//tok)
         startIndexForValid=division*kins
         endInexForValid=division*kins+division
+		ls=self.ls
         
         for i in range(len(self.shuffle)):
             if (startIndexForValid<=i<=endInexForValid):
