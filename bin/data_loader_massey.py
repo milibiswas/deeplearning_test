@@ -91,7 +91,6 @@ class data_loader_messey(object):
                             Resize([128,128]),
                             transforms.ColorJitter(hue=.05, saturation=.05),
                             RandomHorizontalFlip(),
-                            RandomRotation(20, resample=PIL.Image.BILINEAR),
                             Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))
                             ])
         self.simple_transform = Compose([Resize([128,128]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
