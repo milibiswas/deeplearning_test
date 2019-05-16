@@ -153,7 +153,7 @@ class data_loader_messey(object):
         startIndexForValid=division*kins
         endInexForValid=division*kins+division
         
-        for i in len(self.shuffle):
+        for i in range(len(self.shuffle)):
             if (startIndexForValid<=i<=endInexForValid):
                 validList.append(self.shuffle[i])
             else:
