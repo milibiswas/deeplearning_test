@@ -8,9 +8,11 @@ DataLoader : Messey Dataset
 """
 #########################  Module Import ###########################
 
+import PIL
 import os
 import shutil as sh
 import numpy as np
+from torchvision import transforms
 from torchvision.transforms import Compose,ToTensor,Resize,Normalize,RandomHorizontalFlip,RandomRotation
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
@@ -77,14 +79,21 @@ class data_loader_messey(object):
         for i in os.listdir(self.path):
             self.ls.append((i.split('_')[1],i,))
         
-        self.prepare_test_data(self.ls,0,200)
-        self.prepare_valid_data(self.ls,200,400)
-        self.prepare_train_data(self.ls,400)
-        self.trainValidDatasetLength=len(self.ls)-200    # This is for KFold
+        self.prepare_test_data(self.ls,0,400)
+        self.prepare_valid_data(self.ls,400,700)
+        self.prepare_train_data(self.ls,700)
+        self.trainValidDatasetLength=len(self.ls)-400    # This is for KFold
         
         
         # preparing dataset-train dataset/ validation datadset
-        self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(0.5),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        #self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(0.5),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.train_transform = Compose([
+                            Resize([128,128]),
+                            transforms.ColorJitter(hue=.05, saturation=.05),
+                            RandomHorizontalFlip(),
+                            RandomRotation(20, resample=PIL.Image.BILINEAR),
+                            Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))
+                            ])
         self.simple_transform = Compose([Resize([128,128]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
         self.train_dataset = ImageFolder(self.path_train,transform=self.train_transform)
         self.valid_dataset = ImageFolder(self.path_valid,transform=self.simple_transform)
@@ -154,7 +163,7 @@ class data_loader_messey(object):
         startIndexForValid=division*kins
         endInexForValid=division*kins+division
         ls=self.ls
-        shuffle=copy.deepcopy(self.shuffle[200:])
+        shuffle=copy.deepcopy(self.shuffle[400:])
         
         for i in range(len(shuffle)):
             if (startIndexForValid<=i<=endInexForValid):
