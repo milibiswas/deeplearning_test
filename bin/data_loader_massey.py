@@ -161,7 +161,8 @@ class data_loader_messey(object):
                 validList.append(shuffle[i])
             else:
                 trainList.append(shuffle[i])
-            
+        print(validList)
+        print(trainList)
         if os.path.exists(os.path.join(self.path1,'valid')):
             sh.rmtree(os.path.join(self.path1,'valid'))
         if os.path.exists(os.path.join(self.path1,'train')):
