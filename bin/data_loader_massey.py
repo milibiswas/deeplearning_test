@@ -30,6 +30,7 @@ class data_loader_messey(object):
         self.path_train = "../data/train"
         self.pathTestDataSource=pathTestDataSource
         self.pathTestDataTarget="../test/testdata"
+		self.trainValidDatasetLength=0
             
 
         ###################   Necessary Directory Creation ################
@@ -78,6 +79,7 @@ class data_loader_messey(object):
         self.prepare_test_data(self.ls,0,200)
         self.prepare_valid_data(self.ls,200,400)
         self.prepare_train_data(self.ls,400)
+		self.trainValidDatasetLength=len(self.ls)-200    # This is for KFold
         
         
         # preparing dataset-train dataset/ validation datadset
@@ -96,7 +98,7 @@ class data_loader_messey(object):
         
         ################ Removing temporary paths #######################
         
-        sh.rmtree(self.path)
+        #sh.rmtree(self.path)
         
         
         ######################  End of Constructor ######################
@@ -142,7 +144,56 @@ class data_loader_messey(object):
         self.pathTestDataTarget=tmp_path
         
         
-        
+    def getKFoldDataset(TotalKFold,KFoldInstance):
+	    tok=KFold
+		kins=KFoldInstance
+		trainList=[]
+		validList=[]
+		division=(self.trainValidDatasetLength//tok)
+		startIndexForValid=division*kins
+		endInexForValid=division*kins+division
+		
+		for i in len(self.shuffle):
+		    if (startIndexForValid<=i<=endInexForValid):
+			    validList.append(self.shuffle[i])
+			else:
+			    trainList.append(self.shuffle[i])
+				
+		if os.path.exists(os.path.join(self.path1,'valid')):
+            sh.rmtree(os.path.join(self.path1,'valid'))
+            
+        if os.path.exists(os.path.join(self.path1,'train')):
+            sh.rmtree(os.path.join(self.path1,'train'))
+            
+        os.mkdir(os.path.join(self.path1,'valid'))
+        os.mkdir(os.path.join(self.path1,'train'))
+				
+		for i in validList:
+            if os.path.exists(os.path.join(self.path_valid,ls[i][0])):
+                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
+            else:
+                os.mkdir(os.path.join(self.path_valid,ls[i][0]))
+                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
+				
+		for i in trainList:
+            if os.path.exists(os.path.join(self.path_valid,ls[i][0])):
+                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
+            else:
+                os.mkdir(os.path.join(self.path_valid,ls[i][0]))
+                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
+				
+		self.train_dataset = ImageFolder(self.path_train,transform=self.train_transform)
+        self.valid_dataset = ImageFolder(self.path_valid,transform=self.simple_transform)
+		
+		self.train_dataloader = DataLoader(self.train_dataset,batch_size=30)
+        self.valid_dataloader = DataLoader(self. valid_dataset,batch_size=30)
+		
+		
+		
+		
+			    
+		
+		
     
     '''def prepare_test_data(self,pathTestDataSource,pathTestDataTarget):
         ls=[]
