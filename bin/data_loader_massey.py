@@ -144,7 +144,7 @@ class data_loader_messey(object):
         self.pathTestDataTarget=tmp_path
         
         
-    def getKFoldDataset(TotalKFold,KFoldInstance):
+    def getKFoldDataset(self,TotalKFold,KFoldInstance):
         tok=KFold
         kins=KFoldInstance
         trainList=[]
