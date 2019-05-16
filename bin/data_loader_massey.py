@@ -145,7 +145,7 @@ class data_loader_messey(object):
         
         
     def getKFoldDataset(self,TotalKFold,KFoldInstance):
-        tok=KFold
+        tok=TotalKFold
         kins=KFoldInstance
         trainList=[]
         validList=[]
