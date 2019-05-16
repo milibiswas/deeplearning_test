@@ -156,9 +156,9 @@ class data_loader_messey(object):
         
         for i in range(len(self.shuffle)):
             if (startIndexForValid<=i<=endInexForValid):
-                validList.append(self.shuffle[i])
+                validList.append(self.shuffle[i+200])
             else:
-                trainList.append(self.shuffle[i])
+                trainList.append(self.shuffle[i+200])
             
         if os.path.exists(os.path.join(self.path1,'valid')):
             sh.rmtree(os.path.join(self.path1,'valid'))
