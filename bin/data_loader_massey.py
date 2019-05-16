@@ -99,7 +99,7 @@ class data_loader_messey(object):
         
         ################ Removing temporary paths #######################
         
-        #sh.rmtree(self.path)
+        sh.rmtree(self.path)
         
         
         ######################  End of Constructor ######################
@@ -170,6 +170,14 @@ class data_loader_messey(object):
         
         os.mkdir(os.path.join(self.path1,'valid'))
         os.mkdir(os.path.join(self.path1,'train'))
+        
+        if os.path.exists(self.path):
+            sh.rmtree(self.path)
+            os.mkdir(self.path)
+            self.multiple_file_copy(self.SourceDatasetPath,self.path)
+        else:
+            os.mkdir(self.path)
+            self.multiple_file_copy(self.SourceDatasetPath,self.path)
         
         for i in validList:
             if os.path.exists(os.path.join(self.path_valid,ls[i][0])):
