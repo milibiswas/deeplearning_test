@@ -14,6 +14,7 @@ import numpy as np
 from torchvision.transforms import Compose,ToTensor,Resize,Normalize,RandomHorizontalFlip,RandomRotation
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
+import copy
 
 
 
@@ -153,12 +154,13 @@ class data_loader_messey(object):
         startIndexForValid=division*kins
         endInexForValid=division*kins+division
         ls=self.ls
+        shuffle=copy.deepcopy(self.shuffle[200:])
         
-        for i in range(len(self.shuffle)):
+        for i in range(len(shuffle)):
             if (startIndexForValid<=i<=endInexForValid):
-                validList.append(self.shuffle[i+200])
+                validList.append(shuffle[i])
             else:
-                trainList.append(self.shuffle[i+200])
+                trainList.append(shuffle[i])
             
         if os.path.exists(os.path.join(self.path1,'valid')):
             sh.rmtree(os.path.join(self.path1,'valid'))
