@@ -187,11 +187,11 @@ class data_loader_messey(object):
                 os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
         
         for i in trainList:
-            if os.path.exists(os.path.join(self.path_valid,ls[i][0])):
-                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
+            if os.path.exists(os.path.join(self.path_train,ls[i][0])):
+                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_train,ls[i][0],ls[i][1]))
             else:
-                os.mkdir(os.path.join(self.path_valid,ls[i][0]))
-                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_valid,ls[i][0],ls[i][1]))
+                os.mkdir(os.path.join(self.path_train,ls[i][0]))
+                os.rename(os.path.join(self.path,ls[i][1]),os.path.join(self.path_train,ls[i][0],ls[i][1]))
         
         self.train_dataset = ImageFolder(self.path_train,transform=self.train_transform)
         self.valid_dataset = ImageFolder(self.path_valid,transform=self.simple_transform)
