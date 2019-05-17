@@ -81,7 +81,7 @@ class data_loader_kaggle():
                 lowercase_name = rows[1]['image'].split('/')[1].lower().split('.')[0] + '_' + random_postfix + '.jpg'
                 image_name_with_extention = lowercase_name.replace('.jpg', '.png')
     
-                imsave(self.directory_common + image_name_with_extention, cropped_img)
+                imsave(self.directory_common + '/' + image_name_with_extention, cropped_img)
     
         print('Data saved in common dir')
         print('Dividing into train and val set')
