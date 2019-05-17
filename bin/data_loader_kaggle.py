@@ -38,9 +38,9 @@ class data_loader_kaggle():
 
         # preparing dataloader - train dataloader /validation dataloader
         
-        self.train_dataloader = DataLoader(self.train_dataset,batch_size=200)
-        self.valid_dataloader = DataLoader(self. valid_dataset,batch_size=200)
-        #self.test_dataloader = DataLoader(self. test_dataset,batch_size=50)
+        self.train_dataloader = DataLoader(self.train_dataset,batch_size=50)
+        self.valid_dataloader = DataLoader(self.valid_dataset,batch_size=50)
+        self.test_dataloader = DataLoader(self.test_dataset,batch_size=50)
         
         ################ Removing temporary paths #######################
         
