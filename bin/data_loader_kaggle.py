@@ -15,12 +15,16 @@ from torch.utils.data import DataLoader
 
 class data_loader_kaggle():
     
-    def __init__(self,):
-        self.user_images = glob.glob('../dataset_2')
-        self.directory_common = '../dataset_2/common/'
+    def __init__(self,SourceDatasetPath="../data/dataset/kaggledataset",pathTestDataSource="../test/dataset/kaggledataset"):
+        self.SourceDatasetPath=SourceDatasetPath
+        self.pathTestDataSource=pathTestDataSource
+        self.pathTestDataTarget="../test/testdata"
+        self.trainValidDatasetLength=0
+        self.directory_common = "../data/tmp_kaggle"
         self.directory_original = '../data/'
         self.train_prefix = 'train/'
         self.val_prefix = 'valid/'
+        
         self.load_second_dataset()
         
         
@@ -62,7 +66,7 @@ class data_loader_kaggle():
         os.mkdir(os.path.join(self.directory_original,'train'))
     
         for user in ["user_3", "user_4", "user_5", "user_6", "user_7", "user_9", "user_10"]:
-            boundingbox_df = pd.read_csv('../dataset_2/' + user + '/' + user + '_loc.csv')
+            boundingbox_df = pd.read_csv(self.SourceDatasetPath + '/' + user + '/' + user + '_loc.csv')
             print('Saving data in common dir')
     
             for rows in boundingbox_df.iterrows():
@@ -83,8 +87,10 @@ class data_loader_kaggle():
         print('Dividing into train and val set')
         shuffle = np.random.permutation(len(os.listdir(self.directory_common)))
         # todo change 1330 number for ratio
-        self.load_train_data(os.listdir(self.directory_common), shuffle, self.directory_common, 1330)
-        self.load_val_data(os.listdir(self.directory_common), shuffle, self.directory_common)
+        self.prepare_test_data(os.listdir(self.directory_common),shuffle,self.directory_common,0,int(len(shuffle)*0.2))
+        self.load_train_data(os.listdir(self.directory_common), shuffle, self.directory_common,2*int(len(shuffle)*0.2),len(shuffle))
+        self.load_val_data(os.listdir(self.directory_common), shuffle, self.directory_common,int(len(shuffle)*0.2),2*int(len(shuffle)*0.2))
+        
     
     def crop(self,img, x1, x2, y1, y2, scale):
         crp=img[y1:y2,x1:x2]
@@ -111,10 +117,9 @@ class data_loader_kaggle():
     
         return imageset, frame
     
-    def load_train_data(self,list_dir, path_array, from_directory, lower_bound):
-        print('length list dir ', len(list_dir))
-        print('length path array ', len(path_array))
-        for i in range(0 , lower_bound):
+    def load_train_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
+        print("Train data preparation phase")
+        for i in path_array[lower_bound:upper_bound]:
             file = list_dir[path_array[i]]
             
             if os.path.exists(os.path.join(self.directory_original,self.train_prefix,file[0])):
@@ -124,20 +129,31 @@ class data_loader_kaggle():
                 os.rename(from_directory + file, self.directory_original + self.train_prefix + file[0] + '/' + file)
                 
     
-    def load_val_data(self,list_dir, path_array, from_directory):
-        print('length list dir ', len(list_dir))
-        print('length path array ', len(path_array))
-        for i in range(0, len(list_dir)):
-            file = list_dir[i]
+    def load_val_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
+        print("Validation data preparation phase")
+        for i in path_array[lower_bound:upper_bound]:
+            file = list_dir[path_array[i]]
             
             if os.path.exists(os.path.join(self.directory_original,self.val_prefix,file[0])):
                 os.rename(from_directory + file, self.directory_original + self.val_prefix + file[0] + '/' + file)
             else:
                 os.mkdir(os.path.join(self.directory_original,self.val_prefix,file[0]))
                 os.rename(from_directory + file, self.directory_original + self.val_prefix + file[0] + '/' + file)
+                
+    def prepare_test_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
+        tmp_path=os.path.join(self.pathTestDataTarget,'test_tmp')
+        print("Test data preparation phase")
+        for i in path_array[lower_bound:upper_bound]:
+            file = list_dir[path_array[i]]
+            
+            if os.path.exists(os.path.join(tmp_path,self.val_prefix,file[0])):
+                os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
+            else:
+                os.mkdir(os.path.join(self.directory_original,self.val_prefix,file[0]))
+                os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
                     
     def load_second_dataset(self,):
         imageset, frame = self.train_binary(["user_3", "user_4", "user_5", "user_6", "user_7", "user_9", "user_10"],
-                                       '../dataset_2/')
+                                       self.SourceDatasetPath+'/')
         self.load_dataset_2(imageset)
     
