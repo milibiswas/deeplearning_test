@@ -149,7 +149,7 @@ class data_loader_kaggle():
             if os.path.exists(os.path.join(tmp_path,self.val_prefix,file[0])):
                 os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
             else:
-                os.mkdir(os.path.join(self.directory_original,self.val_prefix,file[0]))
+                os.mkdir(os.path.join(tmp_path,self.val_prefix,file[0]))
                 os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
                     
     def load_second_dataset(self,):
