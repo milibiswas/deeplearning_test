@@ -89,9 +89,10 @@ class data_loader_kaggle():
         
         # todo change 1330 number for ratio
         testUpperBound=int(len(shuffle)*(self.datasplit))
-        self.prepare_test_data(os.listdir(self.directory_common),shuffle,self.directory_common,0,testUpperBound)
-        self.load_val_data(os.listdir(self.directory_common), shuffle, self.directory_common,testUpperBound,2*testUpperBound)
-        self.load_train_data(os.listdir(self.directory_common), shuffle, self.directory_common,2*testUpperBound,len(shuffle))
+        list_dirs=os.listdir(self.directory_common)
+        self.prepare_test_data(list_dirs,shuffle,self.directory_common,0,testUpperBound)
+        self.load_val_data(list_dirs, shuffle, self.directory_common,testUpperBound,2*testUpperBound)
+        self.load_train_data(list_dirs, shuffle, self.directory_common,2*testUpperBound,len(shuffle))
         
         
     
@@ -122,6 +123,8 @@ class data_loader_kaggle():
     
     def load_train_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
         print("Train data preparation phase")
+        print("Lowerbound",lower_bound)
+        print("Upperbound",upper_bound)
         for i in path_array[lower_bound:upper_bound]:
             file = list_dir[path_array[i]]
             
@@ -134,6 +137,8 @@ class data_loader_kaggle():
     
     def load_val_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
         print("Validation data preparation phase")
+        print("Lowerbound",lower_bound)
+        print("Upperbound",upper_bound)
         for i in path_array[lower_bound:upper_bound]:
             file = list_dir[path_array[i]]
             
@@ -146,6 +151,8 @@ class data_loader_kaggle():
     def prepare_test_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
         tmp_path=os.path.join(self.pathTestDataTarget,'test_tmp')
         print("Test data preparation phase")
+        print("Lowerbound",lower_bound)
+        print("Upperbound",upper_bound)
         for i in path_array[lower_bound:upper_bound]:
             file = list_dir[path_array[i]]
             
