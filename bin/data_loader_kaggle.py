@@ -20,7 +20,7 @@ class data_loader_kaggle():
         self.pathTestDataSource=pathTestDataSource
         self.pathTestDataTarget="../test/testdata"
         self.trainValidDatasetLength=0
-        self.directory_common = "../data/tmp_kaggle"
+        self.directory_common = "../data/tmp_kaggle/"
         self.directory_original = '../data/'
         self.train_prefix = 'train/'
         self.val_prefix = 'valid/'
@@ -81,7 +81,7 @@ class data_loader_kaggle():
                 lowercase_name = rows[1]['image'].split('/')[1].lower().split('.')[0] + '_' + random_postfix + '.jpg'
                 image_name_with_extention = lowercase_name.replace('.jpg', '.png')
     
-                imsave(self.directory_common + '/' + image_name_with_extention, cropped_img)
+                imsave(self.directory_common + image_name_with_extention, cropped_img)
     
         print('Data saved in common dir')
         print('Dividing into train and val set')
