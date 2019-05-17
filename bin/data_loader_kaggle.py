@@ -24,7 +24,7 @@ class data_loader_kaggle():
         self.directory_original = '../data/'
         self.train_prefix = 'train/'
         self.val_prefix = 'valid/'
-        
+        self.datasplit=0.2        # reatio of dataset between test and train+valid
         self.load_second_dataset()
         
         
@@ -86,10 +86,13 @@ class data_loader_kaggle():
         print('Data saved in common dir')
         print('Dividing into train and val set')
         shuffle = np.random.permutation(len(os.listdir(self.directory_common)))
+        
         # todo change 1330 number for ratio
-        self.prepare_test_data(os.listdir(self.directory_common),shuffle,self.directory_common,0,int(len(shuffle)*0.2))
-        self.load_train_data(os.listdir(self.directory_common), shuffle, self.directory_common,2*int(len(shuffle)*0.2),len(shuffle))
-        self.load_val_data(os.listdir(self.directory_common), shuffle, self.directory_common,int(len(shuffle)*0.2),2*int(len(shuffle)*0.2))
+        testUpperBound=int(len(shuffle)*(self.datasplit))
+        self.prepare_test_data(os.listdir(self.directory_common),shuffle,self.directory_common,testUpperBound)
+        self.load_val_data(os.listdir(self.directory_common), shuffle, self.directory_common,testUpperBound,2*testUpperBound)
+        self.load_train_data(os.listdir(self.directory_common), shuffle, self.directory_common,2*testUpperBound,len(shuffle))
+        
         
     
     def crop(self,img, x1, x2, y1, y2, scale):
@@ -147,10 +150,10 @@ class data_loader_kaggle():
             file = list_dir[path_array[i]]
             
             if os.path.exists(os.path.join(tmp_path,self.val_prefix,file[0])):
-                os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
+                os.rename(from_directory + file, tmp_path+'/' + file[0] + '/' + file)
             else:
                 os.makedirs(os.path.join(tmp_path,self.val_prefix,file[0]))
-                os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
+                os.rename(from_directory + file, tmp_path+'/' + file[0] + '/' + file)
                     
     def load_second_dataset(self,):
         imageset, frame = self.train_binary(["user_3", "user_4", "user_5", "user_6", "user_7", "user_9", "user_10"],
