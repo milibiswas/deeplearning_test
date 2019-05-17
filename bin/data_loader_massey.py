@@ -78,10 +78,12 @@ class data_loader_messey(object):
         for i in os.listdir(self.path):
             self.ls.append((i.split('_')[1],i,))
         
-        self.prepare_test_data(self.ls,0,400)
-        self.prepare_valid_data(self.ls,400,700)
-        self.prepare_train_data(self.ls,700)
-        self.trainValidDatasetLength=len(self.ls)-400    # This is for KFold
+        
+        
+        self.prepare_test_data(self.ls,0,int(0.2*len(self.shuffle)))
+        self.prepare_valid_data(self.ls,int(0.2*len(self.shuffle)),2*(int(0.2*len(self.shuffle))))
+        self.prepare_train_data(self.ls,2*(int(0.2*len(self.shuffle))))
+        self.trainValidDatasetLength=len(self.ls)-int(0.2*len(self.shuffle))    # This is for KFold
         
         
         # preparing dataset-train dataset/ validation datadset
@@ -89,9 +91,7 @@ class data_loader_messey(object):
         self.simple_transform = Compose([Resize([224,224]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
         self.train_dataset = ImageFolder(self.path_train,transform=self.train_transform)
         self.valid_dataset = ImageFolder(self.path_valid,transform=self.simple_transform)
-        print(self.pathTestDataTarget)
         self.test_dataset=ImageFolder(self.pathTestDataTarget,transform=self.simple_transform)
-        #print(valid_dataset[0])
         # preparing dataloader - train dataloader /validation dataloader
         
         self.train_dataloader = DataLoader(self.train_dataset,batch_size=30)
