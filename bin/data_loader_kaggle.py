@@ -125,7 +125,7 @@ class data_loader_kaggle():
             if os.path.exists(os.path.join(self.directory_original,self.train_prefix,file[0])):
                 os.rename(from_directory + file, self.directory_original + self.train_prefix + file[0] + '/' + file)
             else:
-                os.mkdir(os.path.join(self.directory_original,self.train_prefix,file[0]))
+                os.makedirs(os.path.join(self.directory_original,self.train_prefix,file[0]))
                 os.rename(from_directory + file, self.directory_original + self.train_prefix + file[0] + '/' + file)
                 
     
@@ -137,7 +137,7 @@ class data_loader_kaggle():
             if os.path.exists(os.path.join(self.directory_original,self.val_prefix,file[0])):
                 os.rename(from_directory + file, self.directory_original + self.val_prefix + file[0] + '/' + file)
             else:
-                os.mkdir(os.path.join(self.directory_original,self.val_prefix,file[0]))
+                os.makedirs(os.path.join(self.directory_original,self.val_prefix,file[0]))
                 os.rename(from_directory + file, self.directory_original + self.val_prefix + file[0] + '/' + file)
                 
     def prepare_test_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
@@ -149,7 +149,7 @@ class data_loader_kaggle():
             if os.path.exists(os.path.join(tmp_path,self.val_prefix,file[0])):
                 os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
             else:
-                os.mkdir(os.path.join(tmp_path,self.val_prefix,file[0]))
+                os.makedirs(os.path.join(tmp_path,self.val_prefix,file[0]))
                 os.rename(from_directory + file, tmp_path+'/' + self.val_prefix + file[0] + '/' + file)
                     
     def load_second_dataset(self,):
