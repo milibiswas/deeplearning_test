@@ -89,7 +89,7 @@ class data_loader_kaggle():
         
         # todo change 1330 number for ratio
         testUpperBound=int(len(shuffle)*(self.datasplit))
-        self.prepare_test_data(os.listdir(self.directory_common),shuffle,self.directory_common,testUpperBound)
+        self.prepare_test_data(os.listdir(self.directory_common),shuffle,self.directory_common,0,testUpperBound)
         self.load_val_data(os.listdir(self.directory_common), shuffle, self.directory_common,testUpperBound,2*testUpperBound)
         self.load_train_data(os.listdir(self.directory_common), shuffle, self.directory_common,2*testUpperBound,len(shuffle))
         
