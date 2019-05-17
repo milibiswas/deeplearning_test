@@ -150,18 +150,19 @@ class data_loader_kaggle():
                 os.rename(from_directory + file, self.directory_original + self.val_prefix + file[0] + '/' + file)
                 
     def prepare_test_data(self,list_dir, path_array, from_directory, lower_bound,upper_bound):
-        tmp_path=os.path.join(self.pathTestDataTarget,'test_tmp')
+        if os.path.exists(self.pathTestDataTarget):
+            sh.rmtree(self.pathTestDataTarget)
         print("Test data preparation phase")
         print("Lowerbound",lower_bound)
         print("Upperbound",upper_bound)
         for i in path_array[lower_bound:upper_bound]:
             file = list_dir[path_array[i]]
             
-            if os.path.exists(os.path.join(tmp_path,file[0])):
-                os.rename(from_directory + file, tmp_path + '/' + file[0] + '/' + file)
+            if os.path.exists(os.path.join(self.pathTestDataTarget,file[0])):
+                os.rename(from_directory + file, self.pathTestDataTarget + '/' + file[0] + '/' + file)
             else:
-                os.makedirs(os.path.join(tmp_path,file[0]))
-                os.rename(from_directory + file, tmp_path + '/' + file[0] + '/' + file)
+                os.makedirs(os.path.join(self.pathTestDataTarget,file[0]))
+                os.rename(from_directory + file, self.pathTestDataTarget + '/' + file[0] + '/' + file)
                     
     def load_second_dataset(self,):
         imageset, frame = self.train_binary(["user_3", "user_4", "user_5", "user_6", "user_7", "user_9", "user_10"],
