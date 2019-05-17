@@ -18,7 +18,7 @@ class data_loader_kaggle():
     def __init__(self,SourceDatasetPath="../data/dataset/kaggledataset",pathTestDataSource="../test/dataset/kaggledataset"):
         self.SourceDatasetPath=SourceDatasetPath
         self.pathTestDataSource=pathTestDataSource
-        self.pathTestDataTarget="../test/testdata"
+        self.pathTestDataTarget="../test/testdata/test_tmp/"
         self.trainValidDatasetLength=0
         self.directory_common = "../data/tmp_kaggle/"
         self.directory_original = '../data/'
@@ -29,10 +29,11 @@ class data_loader_kaggle():
         
         
         # preparing dataset-train dataset/ validation datadset
-        self.transform = Compose([Resize([224,224]),RandomHorizontalFlip(),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
-        self.train_dataset = ImageFolder(os.path.join(self.directory_original,'train'),transform=self.transform)
-        self.valid_dataset = ImageFolder(os.path.join(self.directory_original,'valid'),transform=self.transform)
-        #self.test_dataset=ImageFolder(self.pathTestDataTarget,transform=self.transform)
+        self.train_transform = Compose([Resize([224,224]),RandomHorizontalFlip(),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.simple_transform = Compose([Resize([224,224]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.train_dataset = ImageFolder(os.path.join(self.directory_original,'train'),transform=self.train_transform)
+        self.valid_dataset = ImageFolder(os.path.join(self.directory_original,'valid'),transform=self.simple_transform)
+        self.test_dataset=ImageFolder(self.pathTestDataTarget,transform=self.simple_transform)
 
 
         # preparing dataloader - train dataloader /validation dataloader
