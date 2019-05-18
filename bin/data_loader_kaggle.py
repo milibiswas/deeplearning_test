@@ -29,8 +29,8 @@ class data_loader_kaggle():
         
         
         # preparing dataset-train dataset/ validation datadset
-        self.train_transform = Compose([Resize([224,224]),RandomHorizontalFlip(0.5),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
-        self.simple_transform = Compose([Resize([224,224]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.train_transform = Compose([Resize([128,128]),RandomHorizontalFlip(0.5),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.simple_transform = Compose([Resize([128,128]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
         self.train_dataset = ImageFolder(os.path.join(self.directory_original,'train'),transform=self.train_transform)
         self.valid_dataset = ImageFolder(os.path.join(self.directory_original,'valid'),transform=self.simple_transform)
         self.test_dataset=ImageFolder(self.pathTestDataTarget,transform=self.simple_transform)
