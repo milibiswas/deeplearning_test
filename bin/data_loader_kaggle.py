@@ -29,7 +29,7 @@ class data_loader_kaggle():
         
         
         # preparing dataset-train dataset/ validation datadset
-        self.train_transform = Compose([Resize([224,224]),RandomHorizontalFlip(),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
+        self.train_transform = Compose([Resize([224,224]),RandomHorizontalFlip(0.5),RandomRotation(0.2),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
         self.simple_transform = Compose([Resize([224,224]),ToTensor(),Normalize(mean=(0.5,0.5,0.5),std=(0.5,0.5,0.5))])
         self.train_dataset = ImageFolder(os.path.join(self.directory_original,'train'),transform=self.train_transform)
         self.valid_dataset = ImageFolder(os.path.join(self.directory_original,'valid'),transform=self.simple_transform)
@@ -38,9 +38,9 @@ class data_loader_kaggle():
 
         # preparing dataloader - train dataloader /validation dataloader
         
-        self.train_dataloader = DataLoader(self.train_dataset,batch_size=50)
-        self.valid_dataloader = DataLoader(self.valid_dataset,batch_size=50)
-        self.test_dataloader = DataLoader(self.test_dataset,batch_size=50)
+        self.train_dataloader = DataLoader(self.train_dataset,batch_size=30)
+        self.valid_dataloader = DataLoader(self.valid_dataset,batch_size=30)
+        self.test_dataloader = DataLoader(self.test_dataset,batch_size=30)
         
         ################ Removing temporary paths #######################
         
